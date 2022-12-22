@@ -7,4 +7,6 @@ import com.utc.pojo.CheckItem;
 public interface CheckItemService {
     int add(CheckItem checkItem);
     PageResult getList(QueryPageBean queryPageBean);
+
+    void deleteById(Integer id);
 }

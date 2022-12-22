@@ -38,4 +38,20 @@ public class CheckItemServiceImpl implements CheckItemService {
         List<CheckItem> result = page.getResult();
         return new PageResult(total, result);
     }
+
+    @Override
+    public void deleteById(Integer id) {
+        long count = checkItemDao.getCountById(id);
+        if(count > 0) {
+            throw new RuntimeException();
+        }
+
+        int i = checkItemDao.deleteById(id);
+
+        System.out.println("check item delete count: " + i);
+
+        if (i <= 0 ) {
+            throw new RuntimeException();
+        }
+    }
 }

@@ -9,12 +9,18 @@
         (#{code},#{name},#{sex},#{age},#{price},#{type},#{remark},#{attention})
     </insert>
 
-    <select id="selectByCondition" parameterType="String" resultType="com.utc.pojo.CheckItem">
+    <select id="getCheckItemList" parameterType="String" resultType="com.utc.pojo.CheckItem">
         select * from t_checkitem
         <if test="value != null and value.length > 0">
             where code = #{value} or name = #{value}
         </if>
     </select>
+    <!-- <select id="selectByCondition" parameterType="String" resultType="com.utc.pojo.CheckItem"> -->
+    <!--     select * from t_checkitem -->
+    <!--     <if test="value != null and value.length > 0"> -->
+    <!--         where code = #{value} or name = #{value} -->
+    <!--     </if> -->
+    <!-- </select> -->
 
     <!--根据检查项ID统计数据量-->
     <select id="findCountByCheckItemId" parameterType="int" resultType="long">

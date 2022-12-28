@@ -54,4 +54,22 @@ public class CheckItemServiceImpl implements CheckItemService {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public void update(CheckItem checkItem) {
+        long count = checkItemDao.update(checkItem);
+        if(count <= 0) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public CheckItem findById(Integer id) {
+        return checkItemDao.findById(id);
+    }
+
+    @Override
+    public List<CheckItem> findAll() {
+        return checkItemDao.findAll();
+    }
 }

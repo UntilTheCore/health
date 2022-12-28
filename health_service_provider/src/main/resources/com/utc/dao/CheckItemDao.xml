@@ -39,7 +39,42 @@
     <!--     delete from t_checkitem where id = #{id} -->
     <!-- </delete> -->
 
-    <update id="edit" parameterType="com.utc.pojo.CheckItem">
+    <!-- <update id="edit" parameterType="com.utc.pojo.CheckItem"> -->
+    <!--     update t_checkitem -->
+    <!--     <set> -->
+    <!--         <if test="name != null"> -->
+    <!--             name = #{name}, -->
+    <!--         </if> -->
+    <!--         <if test="sex != null"> -->
+    <!--             sex = #{sex}, -->
+    <!--         </if> -->
+    <!--         <if test="code != null"> -->
+    <!--             code = #{code}, -->
+    <!--         </if> -->
+    <!--         <if test="age != null"> -->
+    <!--             age = #{age}, -->
+    <!--         </if> -->
+    <!--         <if test="price != null"> -->
+    <!--             price = #{price}, -->
+    <!--         </if> -->
+    <!--         <if test="type != null"> -->
+    <!--             type = #{type}, -->
+    <!--         </if> -->
+    <!--         <if test="attention != null"> -->
+    <!--             attention = #{attention}, -->
+    <!--         </if> -->
+    <!--         <if test="remark != null"> -->
+    <!--             remark = #{remark}, -->
+    <!--         </if> -->
+    <!--     </set> -->
+    <!--     where id = #{id} -->
+    <!-- </update> -->
+
+    <select id="findById" parameterType="int" resultType="com.utc.pojo.CheckItem">
+        select * from t_checkitem where id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.utc.pojo.CheckItem">
         update t_checkitem
         <set>
             <if test="name != null">
@@ -70,7 +105,8 @@
         where id = #{id}
     </update>
 
-    <select id="findById" parameterType="int" resultType="com.utc.pojo.CheckItem">
-        select * from t_checkitem where id = #{id}
+    <select id="findAll" resultType="com.utc.pojo.CheckItem">
+        select * from t_checkitem;
     </select>
+
 </mapper>

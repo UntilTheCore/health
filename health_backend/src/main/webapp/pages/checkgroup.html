@@ -304,7 +304,7 @@
                 handleAdd () {
                     //alert(this.checkitemIds);
                     //发送ajax请求，将表单数据提交到后台进行处理
-                    axios.post("/checkgroup/add.do?checkitemIds=" + this.checkitemIds,this.formData).then((res) => {
+                    axios.post("/checkgroup/add.do?ids=" + this.checkitemIds,this.formData).then((res) => {
                         //关闭新增窗口
                         this.dialogFormVisible = false;
                         if(res.data.flag){
@@ -331,7 +331,7 @@
                         queryString:this.pagination.queryString
                     };
                     //发送ajax请求，提交分页相关参数
-                    axios.post("/checkgroup/findPage.do",param).then((res) => {
+                    axios.post("/checkGroup/findPage.do",param).then((res) => {
                         //为VUE对象的模型数据赋值，基于双向数据绑定展示到页面
                         this.dataList = res.data.rows;//当前页展示的数据集合
                         this.pagination.total = res.data.total;//总数据量

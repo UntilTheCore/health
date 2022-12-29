@@ -58,13 +58,13 @@ public class CheckItemController {
         return new Result(true, MessageConstant.EDIT_CHECKITEM_SUCCESS);
     }
 
-    @RequestMapping("findById")
+    @RequestMapping("/findById")
     public Result findById(Integer id) {
         CheckItem checkItem = checkItemService.findById(id);
         return new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS, checkItem);
     }
 
-    @RequestMapping("findAll")
+    @RequestMapping("/findAll")
     public Result findAll() {
         List<CheckItem> checkItemList;
         try {

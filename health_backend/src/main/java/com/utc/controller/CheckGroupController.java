@@ -27,7 +27,7 @@ public class CheckGroupController {
         return new Result(true, MessageConstant.ADD_CHECKGROUP_SUCCESS);
     }
 
-    @RequestMapping(value = "/findPage")
+    @RequestMapping("/findPage")
     public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
         return checkGroupService.findPage(queryPageBean);
     }

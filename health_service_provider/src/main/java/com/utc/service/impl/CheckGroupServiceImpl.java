@@ -11,6 +11,9 @@ import com.utc.service.CheckGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service(interfaceClass = CheckGroupService.class)
 @Transactional
 public class CheckGroupServiceImpl implements CheckGroupService {
@@ -22,7 +25,14 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     public void add(CheckGroup checkGroup, Integer[] ids) {
         checkGroupDao.add(checkGroup);
         Integer id = checkGroup.getId();
-        System.out.println("id:" + id);
+        if(ids != null && ids.length > 0) {
+            for (Integer checkItemId: ids) {
+                Map<String, Integer> stringIntegerHashMap = new HashMap<>();
+                stringIntegerHashMap.put("checkGroupId", id);
+                stringIntegerHashMap.put("checkItemId", checkItemId);
+                checkGroupDao.addAssociation(stringIntegerHashMap);
+            }
+        }
     }
 
     @Override

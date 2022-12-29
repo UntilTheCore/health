@@ -2,16 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.utc.dao.CheckGroupDao">
-    <insert id="add" parameterType="com.utc.pojo.CheckGroup" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+
+    <!-- 方法1：使用useGeneratedKeys 和 keyProperty 来获取新增数据的主键 id  -->
+    <!-- <insert id="add" parameterType="com.utc.pojo.CheckGroup" useGeneratedKeys="true" keyProperty="id" keyColumn="id"> -->
+    <!--     insert into t_checkgroup -->
+    <!--         (code, name, helpCode, sex, remark, attention) -->
+    <!--     values -->
+    <!--         (#{code}, #{name}, #{helpCode}, #{sex}, #{remark}, #{attention}) -->
+    <!-- </insert> -->
+
+    <!-- 方法2：通过使用 LAST_INSERT_ID() 函数来获取最新的 id  -->
+    <insert id="add" parameterType="com.utc.pojo.CheckGroup">
+        <!-- 通过设置了 keyProperty 后，mybatis 就会自动将id注入到 传入对象的 id 属性上, 效果同上述方法一 -->
+        <selectKey resultType="int" keyProperty="id" keyColumn="id" order="AFTER">
+            select LAST_INSERT_ID();
+        </selectKey>
+
         insert into t_checkgroup
             (code, name, helpCode, sex, remark, attention)
-        values
+        VALUES
             (#{code}, #{name}, #{helpCode}, #{sex}, #{remark}, #{attention})
     </insert>
 
-    <select id="findPage" parameterType="String" resultMap="com.utc.pojo.CheckGroup">
+    <!-- 在 checkGroup 添加成功后，再添加与之关联的 checkItem -->
+    <!-- 方式一：使用单一 sql 直接添加，由java代码控制是否添加 -->
+    <insert id="addAssociation" parameterType="map">
+        insert into t_checkgroup_checkitem
+        values
+            (#{checkGroupId}, #{checkItemId})
+    </insert>
+
+    <select id="findPage" parameterType="String" resultType="com.utc.pojo.CheckGroup">
         select * from t_checkgroup
-        <if test="queryString != null and queryString.length > 0">
+        <if test="queryString != null and queryString != ''">
             where code = #{queryString} or name = #{queryString}
         </if>
     </select>

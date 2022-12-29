@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface CheckGroupDao {
     int add(CheckGroup checkGroup);
-    void addToCheckItemAndCheckGroup(Map<String, Integer> map);
 
     Page<CheckGroup> findPage(@Param("queryString") String queryString);
+    void addAssociation(Map map);
 }

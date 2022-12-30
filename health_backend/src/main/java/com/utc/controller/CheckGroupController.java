@@ -66,4 +66,15 @@ public class CheckGroupController {
         }
         return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
     }
+
+    @PutMapping("/edit")
+    public Result edit(@RequestBody CheckGroup checkGroup, Integer[] checkItemIds) {
+        try {
+            checkGroupService.edit(checkGroup, checkItemIds);
+            return new Result(true, MessageConstant.EDIT_CHECKGROUP_SUCCESS);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.EDIT_CHECKGROUP_FAIL);
+        }
+    }
 }

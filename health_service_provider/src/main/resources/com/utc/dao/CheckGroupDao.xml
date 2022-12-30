@@ -58,4 +58,31 @@
     <delete id="deleteCheckItemsByCheckGroupId" parameterType="int">
         delete from t_checkgroup_checkitem where checkgroup_id = #{checkGroupId}
     </delete>
+
+    <!-- void updateCheckGroup(CheckGroup checkGroup); -->
+    <update id="updateCheckGroup" parameterType="com.utc.pojo.CheckGroup">
+        update t_checkgroup
+        <set>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="helpCode != null">
+                helpCode = #{helpCode},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="attention != null">
+                attention = #{attention},
+            </if>
+        </set>
+
+        where id = #{id}
+    </update>
 </mapper>

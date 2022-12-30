@@ -9,12 +9,12 @@ import java.util.Map;
 
 public interface CheckGroupDao {
     int add(CheckGroup checkGroup);
-
     Page<CheckGroup> findPage(@Param("queryString") String queryString);
     void addAssociation(Map map);
+    void addAssociationBatch(Integer[] checkItemIds);
     CheckGroup findById(@Param("id") Integer id);
     List<Integer> findCheckItemsByCheckGroupId(@Param("id") Integer id);
     void deleteById(@Param("id") Integer id);
-
     void deleteCheckItemsByCheckGroupId(@Param("checkGroupId") Integer checkGroupId);
+    void updateCheckGroup(CheckGroup checkGroup);
 }

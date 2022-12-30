@@ -64,4 +64,10 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         // 删除对应检查组
         checkGroupDao.deleteById(id);
     }
+
+    @Override
+    public void edit(CheckGroup checkGroup, Integer[] checkItemIds) {
+        checkGroupDao.updateCheckGroup(checkGroup);
+        checkGroupDao.deleteCheckItemsByCheckGroupId(checkGroup.getId());
+    }
 }

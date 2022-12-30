@@ -67,7 +67,7 @@ public class CheckGroupController {
         return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
     }
 
-    @PutMapping("/edit")
+    @RequestMapping("/edit")
     public Result edit(@RequestBody CheckGroup checkGroup, Integer[] checkItemIds) {
         try {
             checkGroupService.edit(checkGroup, checkItemIds);

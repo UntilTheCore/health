@@ -38,4 +38,24 @@
             where code = #{queryString} or name = #{queryString}
         </if>
     </select>
+
+    <!-- CheckGroup findById(@Param("id") Integer id); -->
+    <select id="findById" parameterType="int" resultType="com.utc.pojo.CheckGroup">
+        select * from t_checkgroup where id = #{id}
+    </select>
+
+    <!-- List<Integer> findCheckItemsByCheckGroupId(@Param("id") Integer id); -->
+    <select id="findCheckItemsByCheckGroupId" parameterType="int" resultType="int">
+        select checkitem_id from t_checkgroup_checkitem where checkgroup_id = #{id}
+    </select>
+    
+    <!-- int deleteById(@Param("id") Integer id); -->
+    <delete id="deleteById" parameterType="int">
+        delete from t_checkgroup where id = #{id}
+    </delete>
+
+    <!-- int deleteCheckItemsByCheckGroupId(@Param("checkGroupId") Integer checkGroupId); -->
+    <delete id="deleteCheckItemsByCheckGroupId" parameterType="int">
+        delete from t_checkgroup_checkitem where checkgroup_id = #{checkGroupId}
+    </delete>
 </mapper>

@@ -6,12 +6,14 @@ import com.github.pagehelper.PageHelper;
 import com.utc.dao.CheckGroupDao;
 import com.utc.entity.PageResult;
 import com.utc.entity.QueryPageBean;
+import com.utc.entity.Result;
 import com.utc.pojo.CheckGroup;
 import com.utc.service.CheckGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service(interfaceClass = CheckGroupService.class)
@@ -25,8 +27,8 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     public void add(CheckGroup checkGroup, Integer[] ids) {
         checkGroupDao.add(checkGroup);
         Integer id = checkGroup.getId();
-        if(ids != null && ids.length > 0) {
-            for (Integer checkItemId: ids) {
+        if (ids != null && ids.length > 0) {
+            for (Integer checkItemId : ids) {
                 Map<String, Integer> stringIntegerHashMap = new HashMap<>();
                 stringIntegerHashMap.put("checkGroupId", id);
                 stringIntegerHashMap.put("checkItemId", checkItemId);
@@ -45,4 +47,21 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         return new PageResult(page.getTotal(), page.getResult());
     }
 
+    @Override
+    public CheckGroup findById(Integer id) {
+        return checkGroupDao.findById(id);
+    }
+
+    @Override
+    public List<Integer> findCheckItemsByCheckGroupId(Integer id) {
+        return checkGroupDao.findCheckItemsByCheckGroupId(id);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        // 清空关联
+        checkGroupDao.deleteCheckItemsByCheckGroupId(id);
+        // 删除对应检查组
+        checkGroupDao.deleteById(id);
+    }
 }

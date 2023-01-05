@@ -16,4 +16,5 @@ public interface CheckGroupDao {
     void deleteById(@Param("id") Integer id);
     void deleteCheckItemsByCheckGroupId(@Param("checkGroupId") Integer checkGroupId);
     void updateCheckGroup(CheckGroup checkGroup);
+    List<CheckGroup> findAll();
 }

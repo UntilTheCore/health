@@ -244,7 +244,8 @@
                 formData: {},//表单数据
                 tableData:[],//添加表单窗口中检查组列表数据
                 checkgroupIds:[],//添加表单窗口中检查组复选框对应id
-                dialogFormVisible: false//控制添加窗口显示/隐藏
+                dialogFormVisible: false,//控制添加窗口显示/隐藏
+                isEdit: false,
             },
             created() {
                 this.findPage();
@@ -275,8 +276,7 @@
                 },
                 //添加
                 handleAdd () {
-                    //发送ajax请求，将表单数据（套餐基本信息、检查组ID）提交到后台进行处理
-                    axios.post("/setmeal/add.do?checkGroupIds=" + this.checkgroupIds,this.formData).then((res) => {
+                    axios.post(`/setmeal/${this.isEdit ? 'edit' : 'add'}.do?checkGroupIds=` + this.checkgroupIds,this.formData).then((res) => {
                         //关闭新增窗口
                         this.dialogFormVisible = false;
                         if(res.data.flag){
@@ -292,6 +292,7 @@
                     }).finally(() => {
                         this.findPage();
                     });
+                    //发送ajax请求，将表单数据（套餐基本信息、检查组ID）提交到后台进行处理
                 },
                 //分页查询
                 findPage() {
@@ -315,20 +316,27 @@
                     this.imageUrl = null;
                     this.checkgroupIds = [];
                 },
+                getAllCheckGroup() {
+                    return new Promise((resolve) => {
+                        axios.get("/checkGroup/findAll.do").then((res) => {
+                            if(res.data.flag){
+                                //查询成功
+                                this.tableData = res.data.data;
+                                resolve(true);
+                            }else{
+                                //查询失败
+                                this.$message.error(res.data.message);
+                            }
+                        });
+                    })
+                },
                 // 弹出添加窗口
                 handleCreate() {
+                    this.isEdit = false;
                     this.resetForm();
                     this.dialogFormVisible = true;
                     //发送ajax请，查询所有的检查组数据，转为json展示到当前新增窗口中
-                    axios.get("/checkGroup/findAll.do").then((res) => {
-                        if(res.data.flag){
-                            //查询成功
-                            this.tableData = res.data.data;
-                        }else{
-                            //查询失败
-                            this.$message.error(res.data.message);
-                        }
-                    });
+                    this.getAllCheckGroup();
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
@@ -349,6 +357,25 @@
                         })
                     }).catch(() => {
                         this.$message.info("已取消删除")
+                    })
+                },
+                handleEdit(id) {
+                    this.isEdit = true;
+                    axios.get('/setmeal/findById.do', {params: {id}}).then(res => {
+                        if(res.data.flag) {
+                            this.formData = res.data.data;
+                            this.imageUrl = 'http://rnx2fxt80.bkt.clouddn.com/' + res.data.data.img;
+                            this.getAllCheckGroup().then(() => {
+                                axios.get('/setmeal/findCheckGroupIdsBySetMealId.do', {params: {id}}).then(res => {
+                                    if(res.data.flag) {
+                                        this.checkgroupIds = res.data.data;
+                                        this.dialogFormVisible = true;
+                                    }
+                                })
+                            })
+                        } else {
+                            this.$message.error(res.message);
+                        }
                     })
                 }
             }

@@ -11,7 +11,7 @@ import com.utc.service.SetMealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service(interfaceClass = SetMealService.class)
 @Transactional
@@ -25,6 +25,10 @@ public class SetMealServiceImpl implements SetMealService {
         setMealDao.add(setmeal);
         Integer id = setmeal.getId();
 
+        this.setAssociation(checkGroupIds, id);
+    }
+
+    private void setAssociation(Integer[] checkGroupIds, Integer id) {
         if(checkGroupIds != null && checkGroupIds.length > 0) {
             for (Integer checkGroupId : checkGroupIds) {
                 setMealDao.addCheckGroupAssociation(id, checkGroupId);
@@ -46,5 +50,24 @@ public class SetMealServiceImpl implements SetMealService {
     @Override
     public void deleteById(Integer id) {
         setMealDao.deleteById(id);
+    }
+
+    @Override
+    public Setmeal findById(Integer id) {
+        return setMealDao.findById(id);
+    }
+
+    @Override
+    public List<Integer> findCheckGroupIdsBySetMealId(Integer id) {
+        return setMealDao.findCheckGroupIdsBySetMealId(id);
+    }
+
+    @Override
+    public void edit(Setmeal setmeal, Integer[] checkGroupIds) {
+        // 先清空所有的关联
+        setMealDao.deleteCheckGroupAssociationBySetMealId(setmeal.getId());
+        setMealDao.edit(setmeal);
+        // 添加新的关联
+        this.setAssociation(checkGroupIds, setmeal.getId());
     }
 }

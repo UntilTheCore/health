@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -68,5 +69,36 @@ public class SetMealController {
         }
 
         return new Result(true, "删除套餐成功");
+    }
+
+    @GetMapping("/findById")
+    public Result findById(Integer id) {
+        try {
+            Setmeal setmeal = setMealService.findById(id);
+            return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setmeal);
+        } catch (Exception e) {
+            return new Result(false, MessageConstant.QUERY_SETMEAL_FAIL);
+        }
+    }
+
+    @GetMapping("/findCheckGroupIdsBySetMealId")
+    public Result findCheckGroupIdsBySetMealId(Integer id) {
+        try {
+            List<Integer> checkGroupIdsBySetMealId = setMealService.findCheckGroupIdsBySetMealId(id);
+            return new Result(true, "获取套餐关联检查组成功", checkGroupIdsBySetMealId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "获取套餐关联检查组失败");
+        }
+    }
+
+    @PostMapping("/edit")
+    public Result edit(@RequestBody Setmeal setmeal, Integer[] checkGroupIds) {
+        try {
+            setMealService.edit(setmeal, checkGroupIds);
+            return new Result(true, "编辑套餐成功");
+        } catch (Exception e) {
+            return new Result(false, "编辑套餐失败");
+        }
     }
 }

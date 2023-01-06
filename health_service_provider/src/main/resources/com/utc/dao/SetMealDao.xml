@@ -22,6 +22,11 @@
             (#{setMealId}, #{checkGroupId});
     </insert>
 
+    <!-- void deleteCheckGroupAssociationBySetMealId(@Param("id") Integer id); -->
+    <delete id="deleteCheckGroupAssociationBySetMealId" parameterType="int">
+        delete from t_setmeal_checkgroup where setmeal_id = #{id}
+    </delete>
+
     <!-- Page<Setmeal> findPage(@Param("queryString") String queryString); -->
     <select id="findPage" parameterType="string" resultType="Setmeal">
         select * from t_setmeal
@@ -34,4 +39,49 @@
     <delete id="deleteById" parameterType="int">
         delete from t_setmeal where id = #{id}
     </delete>
+
+    <!-- Setmeal findById(@Param("id") Integer id); -->
+    <select id="findById" parameterType="int" resultType="Setmeal">
+        select * from t_setmeal where id = #{id}
+    </select>
+
+    <!-- List<Integer> findCheckGroupIdsBySetMealId(Integer id); -->
+    <select id="findCheckGroupIdsBySetMealId" parameterType="int" resultType="int">
+        select checkgroup_id from t_setmeal_checkgroup where setmeal_id = #{id}
+    </select>
+
+    <!-- void edit(Setmeal setmeal); -->
+    <update id="edit" parameterType="Setmeal">
+        update t_setmeal
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="helpCode != null">
+                helpCode = #{helpCode},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="attention != null">
+                attention = #{attention},
+            </if>
+            <if test="img != null">
+                img = #{img}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

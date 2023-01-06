@@ -2,6 +2,8 @@ package com.utc.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.utc.constant.MessageConstant;
+import com.utc.entity.PageResult;
+import com.utc.entity.QueryPageBean;
 import com.utc.entity.Result;
 import com.utc.pojo.Setmeal;
 import com.utc.service.SetMealService;
@@ -49,5 +51,22 @@ public class SetMealController {
         }
 
         return new Result(true, MessageConstant.ADD_SETMEAL_SUCCESS);
+    }
+
+    @GetMapping("/findPage")
+    public PageResult findPage(QueryPageBean queryPageBean) {
+        return setMealService.findPage(queryPageBean);
+    }
+
+    @DeleteMapping("/delete")
+    public Result deleteById(Integer id) {
+        try {
+            setMealService.deleteById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "删除套餐失败");
+        }
+
+        return new Result(true, "删除套餐成功");
     }
 }

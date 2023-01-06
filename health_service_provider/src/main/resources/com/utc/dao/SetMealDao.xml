@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utc.dao.SetMealDao">
+    <!-- void add(Setmeal setmeal); -->
+    <insert id="add" parameterType="com.utc.pojo.Setmeal" useGeneratedKeys="true" keyProperty="id">
+        insert into t_setmeal
+        (name, code, helpCode, sex, age, price, remark, attention, img)
+        VALUES
+        (#{name}, #{code}, #{helpCode}, #{sex},#{age},#{price},#{remark},#{attention},#{img})
+        <!-- <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER"> -->
+        <!--     select LAST_INSERT_ID(); -->
+        <!-- </selectKey> -->
+    </insert>
+
+    <!-- void addCheckGroupAssociation(@Param("setMealId") Integer setMealId,@Param("checkGroupId") Integer checkGroupId); -->
+    <insert id="addCheckGroupAssociation">
+        insert into t_setmeal_checkgroup
+            (setmeal_id, checkgroup_id)
+        values
+            (#{setMealId}, #{checkGroupId});
+    </insert>
+</mapper>

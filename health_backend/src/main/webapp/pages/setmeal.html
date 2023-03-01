@@ -254,7 +254,7 @@
                 //文件上传成功后的钩子，response为服务端返回的值，file为当前上传的文件封装成的js对象
                 handleAvatarSuccess(response, file) {
                     //为模型数据imageUrl赋值，用于页面图片预览
-                    this.imageUrl = 'http://rnx2fxt80.bkt.clouddn.com/' + response.data;
+                    this.imageUrl = 'http://rqo10rdus.bkt.clouddn.com/' + response.data;
                     this.$message({
                         type:response.flag ? 'success':'error',
                         message:response.message
@@ -364,7 +364,7 @@
                     axios.get('/setmeal/findById.do', {params: {id}}).then(res => {
                         if(res.data.flag) {
                             this.formData = res.data.data;
-                            this.imageUrl = 'http://rnx2fxt80.bkt.clouddn.com/' + res.data.data.img;
+                            this.imageUrl = 'http://rqo10rdus.bkt.clouddn.com/' + res.data.data.img;
                             this.getAllCheckGroup().then(() => {
                                 axios.get('/setmeal/findCheckGroupIdsBySetMealId.do', {params: {id}}).then(res => {
                                     if(res.data.flag) {

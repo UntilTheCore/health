@@ -3,6 +3,7 @@ package com.utc.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.utc.constant.SetMealConstant;
 import com.utc.dao.SetMealDao;
 import com.utc.entity.PageResult;
 import com.utc.entity.QueryPageBean;
@@ -10,6 +11,7 @@ import com.utc.pojo.Setmeal;
 import com.utc.service.SetMealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 
@@ -19,13 +21,15 @@ public class SetMealServiceImpl implements SetMealService {
 
     @Autowired
     SetMealDao setMealDao;
+    @Autowired
+    private JedisPool jedisPool;
 
     @Override
     public void add(Setmeal setmeal, Integer[] checkGroupIds) {
         setMealDao.add(setmeal);
         Integer id = setmeal.getId();
-
         this.setAssociation(checkGroupIds, id);
+        jedisPool.getResource().sadd(SetMealConstant.SET_MEAL_PIC_DB_RESOURCE, setmeal.getImg());
     }
 
     private void setAssociation(Integer[] checkGroupIds, Integer id) {

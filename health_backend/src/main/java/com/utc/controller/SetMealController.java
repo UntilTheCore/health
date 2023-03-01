@@ -2,14 +2,18 @@ package com.utc.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.utc.constant.MessageConstant;
+import com.utc.constant.SetMealConstant;
 import com.utc.entity.PageResult;
 import com.utc.entity.QueryPageBean;
 import com.utc.entity.Result;
 import com.utc.pojo.Setmeal;
 import com.utc.service.SetMealService;
 import com.utc.utils.QiNiuUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,6 +25,8 @@ public class SetMealController {
 
     @Reference
     SetMealService setMealService;
+    @Autowired
+    JedisPool jedisPool;
 
     @RequestMapping("/upload")
     public Result uploadFile(@RequestParam("imgFile") MultipartFile imgFile) {
@@ -33,6 +39,8 @@ public class SetMealController {
         try {
             byte[] fileBytes = imgFile.getBytes();
             QiNiuUtils.upload2QiNiu(fileBytes, fileName);
+            Jedis jedis = jedisPool.getResource();
+            jedis.sadd(SetMealConstant.SET_MEAL_PIC_RESOURCE, fileName);
         } catch (IOException e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.PIC_UPLOAD_FAIL);
